@@ -4,33 +4,95 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.9](https://img.shields.io/badge/Python-3.9-green.svg)](https://shields.io/)
 
+This repository contains starter code for the IBM DevOps Capstone Project and its Python REST API microservice.
+
 ## CI/CD Tools and Practices Final Project Template
 
 Project name: `ci-cd-final-project`
 
-This repository contains the starter code for the IBM DevOps capstone project. It contains the Python REST API microservice, tests, and CI/CD configuration.
+## Usage
+
+This repository contains the sample application code, tests, and DevOps configuration. The CI workflow checks out the code, installs dependencies, runs Flake8, and executes the Nose test suite.
 
 ## Development Environment
 
-Use the IBM Skills Network Cloud IDE with OpenShift provided by the course lab. Initialize the environment using the instructions provided in the lab, then run the application and tests there.
+These labs are designed to be executed in the IBM Developer Skills Network Cloud IDE with OpenShift. Please use the links provided in your Coursera lab to access the lab environment.
+
+Initialize the environment by following the lab instructions. In the original DevOps Capstone environment, use:
+
+```bash
+source bin/setup.sh
+```
+
+This installs/configures Python 3.9 and activates the Python virtual environment.
+
+## Useful commands
+
+Activate the Python environment:
+
+```bash
+source ~/venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+make install
+```
+
+Start the Postgres Docker container if your lab requires it:
+
+```bash
+make db
+```
 
 ## Project layout
 
 - `service/`: Flask REST API microservice
 - `tests/`: unit tests
 - `requirements.txt`: Python dependencies
-- `.github/workflows/workflow.yml`: GitHub Actions CI workflow
-- `.tekton/tasks.yml`: Tekton cleanup and Nose test tasks
-- `.tekton/pipeline.yml`: OpenShift/Tekton pipeline definition
+- `.github/workflows/workflow.yml`: CI workflow with Flake8 and Nose
+- `.github/workflows/ci-build.yaml`: existing CI Build workflow
+- `.tekton/tasks.yml`: cleanup and Nose Tekton tasks
+- `tekton/`: existing Tekton pipeline and PVC manifests
 
-## CI workflow
+The service uses a Model-View-Controller structure, with data and business logic in `service/models.py` and REST routes in `service/routes.py`.
 
-The workflow checks out the code, installs dependencies, runs Flake8 linting, and runs Nose unit tests on pushes and pull requests targeting `main`.
+## Data Model
 
-## Tekton tasks
+The Account model contains these fields:
 
-The Tekton task file defines a workspace cleanup task and a Nose unit-testing task. The OpenShift pipeline must additionally be configured for the lab cluster's installed Git clone, Flake8, Buildah, and OpenShift client tasks.
+| Name | Type | Optional |
+|------|------|----------|
+| id | Integer | No |
+| name | String(64) | No |
+| email | String(64) | No |
+| address | String(256) | No |
+| phone_number | String(32) | Yes |
+| date_joined | Date | No |
+
+## Project task
+
+Complete the REST APIs for READ, UPDATE, DELETE, and LIST while maintaining the expected test coverage. Follow test-driven development: write tests for the intended behavior, then implement the code to make them pass.
+
+## Local Kubernetes Development
+
+For local Kubernetes development outside the Cloud IDE, you may use Docker Desktop, Visual Studio Code, and the Remote Containers extension.
+
+Example steps:
+
+1. Create a local K3D cluster with `make cluster`.
+2. Install Tekton with `make tekton`.
+3. Install cluster tasks with `make clustertasks`.
+
+## Author
+
+[John Rofrano](https://www.coursera.org/instructor/johnrofrano), IBM Research and Coursera instructor.
 
 ## License
 
-This project includes source material licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
+Licensed under the Apache License 2.0. See [LICENSE](LICENSE).
+
+## Copyright
+
+© IBM Corporation. All rights reserved.
